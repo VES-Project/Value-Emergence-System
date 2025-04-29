@@ -14,18 +14,18 @@
     "concepts": {
       "items": [
         {
-          "title": "Exploring Universality and Pluralities of Values",
-          "description": "Using the free energy principle as a guide, we explore the relationship between universal truth, goodness, and beauty transcending time and culture, and the pluralities of values.",
+          "title": "Exploring the Universality and Plurality of Values",
+          "description": "Using the free energy principle as a clue, we explore the relationship between the universality of truth, goodness, and beauty across eras and cultures, and the plurality of values.",
           "icon": "Sun"
         },
         {
-          "title": "Society and History Through Information and Thermodynamics",
-          "description": "Reinterpreting Hannah Arendt's 'worldness' through information theory and Kojin Karatani's 'modes of exchange' through thermodynamics to elucidate social structures and historical dynamics.",
+          "title": "Deciphering Society and History with Information and Thermodynamics",
+          "description": "By reinterpreting Hannah Arendt's 'Worldliness' with information theory and Kojin Karatani's 'Modes of Exchange' with thermodynamics, we elucidate the dynamics of social structures and history.",
           "icon": "Atom"
         },
         {
-          "title": "Practicing Value Co-creation Beyond Conflict",
-          "description": "Overcoming inevitable value conflicts through pragmatism focused on minimizing transaction costs and digital democracy, aiming for practical harmony.",
+          "title": "The Law of Least Cost Towards Fated Harmony",
+          "description": "Birth is natural, harmony is fated, and suffering is destined. Therefore, pragmatism as the 'Law of Least Cost Towards Fated Harmony' is the essence of the Value Emergence System.",
           "icon": "Handshake"
         }
       ]
@@ -33,7 +33,7 @@
     "latestWorks": {
       "viewAll": "View all works"
     },
-    "joinButtonText": "Participate"
+    "joinButtonText": "Contribute"
   },
   "works": {
     "title": "Works",
