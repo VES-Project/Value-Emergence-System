@@ -1,0 +1,44 @@
+{
+  "header": {
+    "home": "Home",
+    "concepts": "Concepts",
+    "works": "Works"
+  },
+  "footer": {
+    "copyright": "Copyright"
+  },
+  "home": {
+    "hero": {
+      "title": "Value Emergence System"
+    },
+    "concepts": {
+      "items": [
+        {
+          "title": "Exploring Universality and Pluralities of Values",
+          "description": "Using the free energy principle as a guide, we explore the relationship between universal truth, goodness, and beauty transcending time and culture, and the pluralities of values.",
+          "icon": "Sun"
+        },
+        {
+          "title": "Society and History Through Information and Thermodynamics",
+          "description": "Reinterpreting Hannah Arendt's 'worldness' through information theory and Kojin Karatani's 'modes of exchange' through thermodynamics to elucidate social structures and historical dynamics.",
+          "icon": "Atom"
+        },
+        {
+          "title": "Practicing Value Co-creation Beyond Conflict",
+          "description": "Overcoming inevitable value conflicts through pragmatism focused on minimizing transaction costs and digital democracy, aiming for practical harmony.",
+          "icon": "Handshake"
+        }
+      ]
+    },
+    "latestWorks": {
+      "viewAll": "View all works"
+    },
+    "joinButtonText": "Participate"
+  },
+  "works": {
+    "title": "Works",
+    "empty": "No works available yet.",
+    "readMore": "Read More",
+    "authors": "Authors"
+  }
+}

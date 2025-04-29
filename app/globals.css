@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+}
+
+/* KaTeX スタイルの調整 */
+.math-block {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.math-block .katex-display {
+  margin: 0;
+}
+
+.katex {
+  font-size: 1.21em !important;
+  font-family: "KaTeX_Math", "Times New Roman", serif !important;
+  line-height: 1.6;
+}
+
+.katex .msupsub {
+  text-align: left;
+}
+
+.katex .mfrac .frac-line {
+  border-bottom-width: 1px;
+}
+
+/* インラインの数式 */
+.math-inline {
+  white-space: nowrap;
+}
+
+.math-inline .katex {
+  font-size: 1.05em !important;
+}
+
+/* 数式エラー表示 */
+.math-error {
+  color: hsl(var(--destructive-foreground));
+  background-color: hsl(var(--destructive));
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid hsl(var(--destructive));
+}
+
+/* SVGスタイル */
+svg text {
+  font-family: sans-serif;
+}
+
+/* プロースタイルの調整 */
+.prose {
+  max-width: 100% !important;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose h2 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+/* コードブロックのスタイル */
+.hljs {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --complementary: 45 93% 53%;
+    --complementary-foreground: 24 9.8% 10%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.3rem;
+    --automaton-base: var(--primary);
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --complementary: 45 93% 53%;
+    --complementary-foreground: 24 9.8% 10%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --automaton-base: var(--primary);
+    --radius: 0.3rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    @apply font-sans;
+  }
+  a {
+    @apply text-foreground hover:text-muted-foreground transition-colors;
+  }
+  .prose a {
+     @apply text-foreground hover:text-muted-foreground no-underline;
+  }
+  .dark .prose a {
+    @apply text-foreground hover:text-muted-foreground no-underline;
+  }
+}
+
+@font-face {
+  font-family: "KaTeX_Math";
+  src: url("/fonts/KaTeX_Math-Italic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KaTeX_Main";
+  src: url("/fonts/KaTeX_Main-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KaTeX_Main";
+  src: url("/fonts/KaTeX_Main-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
