@@ -1,6 +1,8 @@
 # Value Emergence System
 
-This project appears to be a web application focused on explaining and showcasing concepts related to "Value Emergence". It likely utilizes Next.js for the frontend framework, TypeScript for type safety, and Tailwind CSS with shadcn/ui for styling.
+This repository **is** the Value Emergence System itself, serving as an Open Science hub. It aims to foster the field of Value Emergence Systems Science by allowing anyone to contribute through various means, such as submitting articles or participating in discussions.
+
+This project utilizes Next.js for the frontend framework, TypeScript for type safety, and Tailwind CSS with shadcn/ui for styling.
 
 Key features seem to include:
 *   Displaying conceptual information, potentially using Markdown (MDX).
