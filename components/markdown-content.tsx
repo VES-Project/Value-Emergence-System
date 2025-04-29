@@ -17,7 +17,7 @@ declare module "markdown-it-katex"
 function pascalToTitleCase(str: string): string {
   return str
     .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+    .replace(/([a-z\\d])([A-Z])/g, '$1 $2')
     .trim()
 }
 
@@ -33,8 +33,19 @@ export function MarkdownContent({ content }: { content: string }) {
   const currentLocale = typeof localeParam === 'string' ? localeParam : 'en';
 
   useEffect(() => {
-    let processedWithMath = content;
-    processedWithMath = processedWithMath.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
+    // {{keyword}} を Scrapbox リンク (Markdown 形式) に変換する
+    let processedContent = content.replace(
+      /\{\{([^}]+?)\}\}/g,
+      (match, keyword) => {
+        const trimmedKeyword = keyword.trim();
+        const encodedKeyword = encodeURIComponent(trimmedKeyword);
+        const url = `https://scrapbox.io/ves-project/${encodedKeyword}`;
+        return `[${trimmedKeyword}](${url} "Scrapbox: ${trimmedKeyword}")`;
+      }
+    );
+
+    // KaTeX の処理（変更なし）
+    processedContent = processedContent.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
       try {
         const rendered = katex.renderToString(formula.trim(), {
           displayMode: true,
@@ -46,7 +57,7 @@ export function MarkdownContent({ content }: { content: string }) {
         return `<div class="math-error">[Block Error]</div>`;
       }
     });
-    processedWithMath = processedWithMath.replace(/(?<!\$)\$([^$]+?)\$(?!\$)/g, (match, formula) => {
+    processedContent = processedContent.replace(/(?<!\$)\$([^$]+?)\$(?!\$)/g, (match, formula) => {
       try {
         const rendered = katex.renderToString(formula.trim(), {
           displayMode: false,
@@ -59,18 +70,39 @@ export function MarkdownContent({ content }: { content: string }) {
       }
     });
 
+    // MarkdownIt の初期化と設定（変更なし）
     const md = new MarkdownIt({
-      html: true,
+      html: true, // HTML タグを許可
       linkify: true,
       typographer: true,
     })
-      .use(markdownItHighlightJs, { 
+      .use(markdownItHighlightJs, {
         inline: true,
         register: {
           latex: (hljs: HLJSApi) => hljs.getLanguage("latex"),
         },
        });
-       
+
+    // MarkdownIt の link_open ルールをオーバーライドして、Scrapbox リンクにクラスと target を追加
+    const defaultLinkOpenRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+
+    md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+      const token = tokens[idx];
+      const hrefIndex = token.attrs ? token.attrIndex('href') : -1;
+      if (hrefIndex !== -1 && token.attrs) {
+        const href = token.attrs[hrefIndex][1];
+        if (href.startsWith('https://scrapbox.io/ves-project/')) {
+          token.attrPush(['target', '_blank']);
+          token.attrPush(['rel', 'noopener noreferrer']);
+          token.attrPush(['class', 'scrapbox-link']);
+        }
+      }
+      return defaultLinkOpenRender(tokens, idx, options, env, self);
+    };
+
+    // 画像レンダラーのカスタマイズ（変更なし）
     const defaultImageRenderer = md.renderer.rules.image
     md.renderer.rules.image = (tokens, idx, options, env, self) => {
       const token = tokens[idx]
@@ -79,7 +111,7 @@ export function MarkdownContent({ content }: { content: string }) {
       const alt = token.content || ""
       if (src.startsWith("/")) {
          return `<div class="relative w-full h-64 md:h-96 my-8">
-                  <img src="${src}" alt="${alt}" class="object-contain" style="position: absolute; height: 100%; width: 100%; inset: 0; color: transparent;" /> 
+                  <img src="${src}" alt="${alt}" class="object-contain" style="position: absolute; height: 100%; width: 100%; inset: 0; color: transparent;" />
                 </div>`
       }
       if (defaultImageRenderer) {
@@ -88,26 +120,27 @@ export function MarkdownContent({ content }: { content: string }) {
       return self.renderToken(tokens, idx, options)
     }
 
+    // セグメント分割処理 (SVG プレースホルダー用)
     const newSegments: ContentSegment[] = [];
     const placeholderRegex = /<(\w+)\s*\/>/g;
     let lastIndex = 0;
-    let match;
+    let match: RegExpExecArray | null;
 
-    while ((match = placeholderRegex.exec(processedWithMath)) !== null) {
+    while ((match = placeholderRegex.exec(processedContent)) !== null) {
       if (match.index > lastIndex) {
-        const htmlPart = processedWithMath.substring(lastIndex, match.index);
+        const htmlPart = processedContent.substring(lastIndex, match.index);
         newSegments.push({ type: 'html', value: md.render(htmlPart).trim() });
       }
 
       const componentName = match[1];
       const svgFileName = pascalToTitleCase(componentName);
       newSegments.push({ type: 'svg', value: svgFileName });
-      
+
       lastIndex = placeholderRegex.lastIndex;
     }
 
-    if (lastIndex < processedWithMath.length) {
-      const htmlPart = processedWithMath.substring(lastIndex);
+    if (lastIndex < processedContent.length) {
+      const htmlPart = processedContent.substring(lastIndex);
       newSegments.push({ type: 'html', value: md.render(htmlPart).trim() });
     }
 
@@ -115,6 +148,7 @@ export function MarkdownContent({ content }: { content: string }) {
 
   }, [content]);
 
+  // レンダリング部分（変更なし）
   return (
     <div className="prose prose-lg max-w-none break-words">
       {segments.map((segment, index) => {
