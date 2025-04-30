@@ -2,6 +2,9 @@
   "footer": {
     "copyright": "Copyright"
   },
+  "header": {
+    "participate": "Participate"
+  },
   "home": {
     "concepts": {
       "items": [

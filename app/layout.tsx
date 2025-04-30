@@ -50,6 +50,7 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        <meta property="og:image" content="/ogp.png" />
       </head>
       <body className={notoSerifJP.className}>{children}</body>
     </html>

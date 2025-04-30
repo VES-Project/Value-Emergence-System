@@ -150,7 +150,7 @@ export function MarkdownContent({ content }: { content: string }) {
 
   // レンダリング部分（変更なし）
   return (
-    <div className="prose prose-lg max-w-none break-words">
+    <div className="prose md:prose-lg max-w-none break-words">
       {segments.map((segment, index) => {
         if (segment.type === 'html') {
           return <div key={index} dangerouslySetInnerHTML={{ __html: segment.value }} />;

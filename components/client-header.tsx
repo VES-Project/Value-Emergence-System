@@ -2,9 +2,13 @@
 
 import dynamic from 'next/dynamic'
 
-// Remove dictionary from props type
+// Add dictionary prop back
 type HeaderProps = {
   lang: string
+  dictionary: {
+    participate: string
+    // Add other header keys if needed later
+  }
 }
 
 // Dynamically import the actual Header component with ssr: false

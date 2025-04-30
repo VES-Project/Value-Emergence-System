@@ -4,6 +4,9 @@ export interface Dictionary {
   footer: {
     copyright: string
   }
+  header: {
+    participate: string
+  }
   home: {
     concepts: {
       items: Array<{
