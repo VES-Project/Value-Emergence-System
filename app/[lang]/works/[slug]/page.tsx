@@ -4,6 +4,7 @@ import { Citation } from "@/components/citation"
 import { WorkCloseButton } from "@/components/work-close-button"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { getDictionary } from "@/lib/dictionaries"
 
 export async function generateMetadata({
   params,
@@ -39,14 +40,14 @@ export default async function WorkPage({
   params: { lang: string; slug: string }
 }) {
   const params = await initialParams;
+  const { lang, slug } = params
+  const dict = await getDictionary(lang)
 
   const work = await getWorkBySlug(params.slug, params.lang)
 
   if (!work) {
     notFound()
   }
-
-  const { lang, slug } = params
 
   return (
     <div className="relative bg-neutral-950 p-4 md:p-8 max-w-screen-lg mx-auto">
@@ -60,6 +61,7 @@ export default async function WorkPage({
             date={work.date ?? ""}
             url={`${process.env.NEXT_PUBLIC_SITE_URL || ""}/${lang}/works/${slug}`}
             lang={lang}
+            dict={{ citationPrefix: dict.citationPrefix }}
           />
         </div>
         <MarkdownContent content={work.content} />

@@ -13,9 +13,10 @@ interface CitationProps {
   doi?: string
   url?: string
   lang: string
+  dict: { citationPrefix: string }
 }
 
-export function Citation({ title, authors, date, journal, doi, url, lang }: CitationProps) {
+export function Citation({ title, authors, date, journal, doi, url, lang, dict }: CitationProps) {
   const [copied, setCopied] = useState(false)
   const [format, setFormat] = useState<"apa" | "mla" | "harvard" | "chicago">("apa")
 
@@ -40,24 +41,25 @@ export function Citation({ title, authors, date, journal, doi, url, lang }: Cita
       day: "numeric",
     })
     const accessDateString = url ? (lang === "ja" ? `, 取得日 ${formattedAccessDate}` : `, Accessed ${formattedAccessDate}`) : ""
+    const prefixedTitle = `${dict.citationPrefix}${title}`
 
     switch (format) {
       case "apa":
         return lang === "ja"
-          ? `${authorString}. (${year}). ${title}. ${journal ? `${journal}. ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}`
-          : `${authorString}. (${year}). ${title}. ${journal ? `${journal}, ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}`
+          ? `${authorString}. (${year}). ${prefixedTitle}. ${journal ? `${journal}. ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}`
+          : `${authorString}. (${year}). ${prefixedTitle}. ${journal ? `${journal}, ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}`
       case "mla":
         return lang === "ja"
-          ? `${authorString}. 『${title}』. ${formattedDate}. ${journal ? `${journal}. ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
-          : `${authorString}. "${title}." ${journal ? `${journal}, ` : ""}${formattedDate}, ${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
+          ? `${authorString}. 『${prefixedTitle}』. ${formattedDate}. ${journal ? `${journal}. ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
+          : `${authorString}. "${prefixedTitle}." ${journal ? `${journal}, ` : ""}${formattedDate}, ${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
       case "harvard":
         return lang === "ja"
-          ? `${authorString} (${year}) 『${title}』, ${journal ? `${journal}, ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
-          : `${authorString} (${year}) '${title}', ${journal ? `${journal}, ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
+          ? `${authorString} (${year}) 『${prefixedTitle}』, ${journal ? `${journal}, ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
+          : `${authorString} (${year}) '${prefixedTitle}', ${journal ? `${journal}, ` : ""}${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
       case "chicago":
         return lang === "ja"
-          ? `${authorString}. 『${title}』. ${journal ? `${journal}, ` : ""}${formattedDate}. ${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
-          : `${authorString}. "${title}." ${journal ? `${journal}, ` : ""}${formattedDate}. ${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
+          ? `${authorString}. 『${prefixedTitle}』. ${journal ? `${journal}, ` : ""}${formattedDate}. ${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
+          : `${authorString}. "${prefixedTitle}." ${journal ? `${journal}, ` : ""}${formattedDate}. ${doi ? `https://doi.org/${doi}` : url || ""}${accessDateString}.`
       default:
         return ""
     }

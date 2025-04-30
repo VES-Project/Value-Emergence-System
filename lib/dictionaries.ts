@@ -1,6 +1,7 @@
 import "server-only"
 
 export interface Dictionary {
+  citationPrefix: string;
   footer: {
     copyright: string
   }
