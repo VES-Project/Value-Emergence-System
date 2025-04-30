@@ -1,7 +1,6 @@
 import React from 'react';
 import { getDictionary } from '@/lib/dictionaries';
-import { getAllContributors, ContributorMeta } from '@/lib/mdx'; // Import necessary functions and types
-import Link from 'next/link'; // Import Link for potential future use
+import { getAllContributors } from '@/lib/mdx'; // Remove ContributorMeta
 import Image from 'next/image'; // Import Image for potential future use
 
 export default async function ContributorsPage({ params: { lang } }: { params: { lang: string } }) {

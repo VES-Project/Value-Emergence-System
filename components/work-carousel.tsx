@@ -87,6 +87,39 @@ export function WorkCarousel({
     };
   }, [emblaApi]);
 
+  useEffect(() => {
+    if (!emblaApi || !emblaNodeRef.current) return;
+
+    const emblaNode = emblaNodeRef.current;
+
+    const handleClick = (event: MouseEvent) => {
+      if (!emblaApi || !emblaNode) return;
+
+      const targetElement = event.target as HTMLElement;
+      if (targetElement.closest('.embla__slide a, .embla__slide button')) {
+         return;
+      }
+
+      const nodeRect = emblaNode.getBoundingClientRect();
+      const clickX = event.clientX - nodeRect.left;
+      const nodeWidth = nodeRect.width;
+
+      if (clickX < nodeWidth / 2) {
+        emblaApi.scrollPrev();
+      } else {
+        emblaApi.scrollNext();
+      }
+    };
+
+    emblaNode.addEventListener('click', handleClick);
+
+    return () => {
+      if (emblaNode) {
+        emblaNode.removeEventListener('click', handleClick);
+      }
+    };
+  }, [emblaApi]);
+
   if (!works || works.length === 0) {
     return (
       <section className="py-12 md:py-20 lg:py-24 bg-gradient-to-b from-background to-secondary/10">
