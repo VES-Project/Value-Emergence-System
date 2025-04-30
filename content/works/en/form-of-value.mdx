@@ -1,9 +1,60 @@
 ---
-title: "Form of Value"
+title: "1.02 Form of Value"
 date: "2025-04-18"
-order: 3
 authors: ["Naoki SHIMA", "Yotaro Matsui"]
-excerpt: ""
+excerpt: "Formulates action as expected free energy minimization. Explores the Active Inference framework deriving epistemic, pragmatic, and aesthetic values from the norm of surprise minimization."
 ---
 
-# Form of Value 
+# Form of Value
+
+On the other hand, to clarify the substance of our belief system, we must look beyond the realm of perception to the dimension of "action." We do not merely passively perceive the external world and reduce surprise each time. Using predictive mental images that imagine the future, we actively generate our own actions. And the action process, too, can be understood through the value norm of surprise minimization.
+
+For example, in a certain situation, we hold a prediction that "if I take this action, a desirable outcome will be obtained (or an undesirable outcome will be avoided)." When a discrepancy arises between the prediction and the actual result, we update our beliefs to minimize that surprise. Thus, action, like perception, can be regarded as a process related to the value norm of "surprise minimization."
+
+From this perspective, an approach is considered that introduces the construct of "Expected Free Energy," which is the expected value of future free energy. Just as the perception process was described as variational free energy minimization, this is an attempt to describe the action process as "expected free energy minimization."
+
+First, considering the action $a$ that the agent will take in the future, we introduce a condition (${\mid a}$) "depends on the future action $a$" into the free energy $F$ equation. Then, we define the expected free energy $G$ in a form that takes the expectation with respect to the joint probability $q(o,x\mid a)$ — the empirical belief about the future that the agent approximately uses — which combines the potential future event $o$ and the underlying latent state $x$.
+
+$$G(a):=\mathbb E_{q(o,x\mid a)}\left[\ln q(x\mid a)-\ln p(x,o\mid a)\right]$$
+
+When dealing with the above equation $G(a)$, the decomposition $q(o,x\mid a)=p(o\mid a)q(x\mid a)$ is often assumed for $q(o,x\mid a)$. This means that empirical beliefs about future events can be expressed based on current beliefs about the latent state $x$. In this case, the expectation operator $\mathbb E_{q(o,x\mid a)}[\cdot]$ can be treated by decomposing it into a two-stage expectation $\mathbb E_{p(o\mid a)}\mathbb E_{q(x\mid a)}$.
+
+Furthermore, for $p(x,o\mid a)$ as well, it is often decomposed as $p(x,o\mid a)=p(x\mid o,a)\tilde p(o)$, and $\tilde p(o)$ is interpreted as a "prior preference that anticipates a high probability for desirable events $o$." "Preference" is a construct referring to the tastes that a decision-making agent holds towards options.
+
+Based on these decompositions, the expected free energy $G(a)$ can be transformed as follows:
+
+$$G(a)=-\underbrace{\mathbb E_{p(o\mid a)}\mathbb E_{q(x\mid a)}\left[\ln\frac{q(x\mid o, a)}{q(x\mid a)}\right]}_\text{epistemic value}-\underbrace{\mathbb E_{p(o\mid a)}\left[\ln\tilde p(o)\right]}_\text{pragmatic value}$$
+
+The first term is called "epistemic value." This is the quantity obtained by taking the weighted average (expectation) with respect to the occurrence probability $q(o\mid a)$ of event $o$, for the KL divergence
+
+$$D_\mathrm {KL}[q(x\mid o,a)\Vert q(x\mid a)]=\mathbb E_{q(x\mid a)}\left[\ln\frac{q(x\mid o, a)}{q(x\mid a)}\right]$$
+
+which represents how much the belief about the latent state $x$ is updated by the future event $o$. That is, in the minimization of $G(a)$, it can be interpreted as representing an epistemic/exploratory principle of action where an action $a$ anticipating an event $o$ from which "much information can be obtained" (= KL divergence becomes large) is chosen.
+
+The second term is called "pragmatic value." When $\tilde p(o)$ is given as a preference, it is a quantity that increases as desirable events are anticipated. Therefore, in the minimization of $G(a)$, it can be interpreted as representing a pragmatic principle of action where an action $a$ that realizes a desirable event $o$ is chosen.
+
+Also, if $\tilde p(o)$ is not interpreted as a preference, simply setting $\tilde p(o)=p(o\mid a)$ makes the second term take the form of entropy representing uncertainty, and the minimization of $G(a)$ can be interpreted as embodying an action principle that minimizes the uncertainty anticipated in the future.
+
+Up to this point is the standard two-term decomposition. As a more advanced interpretation, there is an approach that treats the preference $\tilde p(o)$ itself as unknown and as a random variable that can change through perception and action. Therefore, let
+
+$$\tilde p(o)=\int p(o\mid u)p(u)du$$
+
+and introduce the latent variable $u$ as a preference parameter. In this case, the factorization of the generative model and the variational density are extended respectively as
+
+$$p(x,o,u\mid a)=p(x\mid o,a)p(o\mid u)p(u),\\{q(x,o,u\mid a)=p(o\mid a)q(x\mid a)q(u\mid a)}$$
+
+Transforming the expected free energy $G(a)$ under this extended model yields a decomposition into the following three terms:
+
+$$\begin{array}{rl}G(a)=&\displaystyle -\underbrace{\mathbb E_{p(o\mid a)}\mathbb E_{q(x\mid a)}\left[\ln\frac{q(x\mid o,a)}{q(x\mid a)}\right]}_\text{epistemic value}\\&\displaystyle -\underbrace{\mathbb E_{p(o\mid a)}\mathbb E_{q(u\mid a)}\left[\ln\frac{p(o\mid u)}{p(o\mid a)}\right]}_\text{pragmatic value}\\&\displaystyle -\underbrace{\mathbb E_{q(u\mid a)}\left[\ln\frac{q(u\mid a)}{p(u)}\right]}_\text{aesthetic value}\\\end{array}$$
+
+The first term can be interpreted as "epistemic value," same as before. The second term, formally similar to the previous $\mathbb E_{p(o\mid a)}[\ln \tilde p(o)]$, can be interpreted as "pragmatic value," but differs in that the preference used in its expectation calculation depends on the current belief. This represents an action principle of selecting actions that yield desirable outcomes based on the estimation of current preferences. If preferences are uncertain, this term also functions as an indicator evaluating the discrepancy between the prediction $p(o\mid a)$ for future observation $o$ and the prediction $\mathbb E_{q(u\mid a)​}[p(o\mid u)]$ based on the estimated preference, potentially promoting robust choices.
+
+The third term is the KL divergence between the current belief about preferences $q(u\mid a)$ and the prior preference $p(u)$, called "aesthetic value." Here, $D_{\text{KL}}[q(u\mid a)\Vert p(u)]$ is a complexity cost measuring "how much the preferences can avoid becoming complex." A smaller value indicates the model is less wasteful and elegant—in an information-theoretically compressed state—and is associated with aesthetic pleasure. Therefore, aesthetic value can be interpreted as the value associated with updating beliefs about tastes (preference parameter $u$) and reducing complexity itself, representing an action principle of exploring one's own internal state.
+
+Thus, by introducing the concept of expected free energy, perception and action can be described consistently under the value norm of "surprise minimization." The decomposition of expected free energy also reveals three values (meanings) in action: "epistemic value," which seeks to acquire more information to reduce future uncertainty; "pragmatic value," which seeks to obtain desirable outcomes (or avoid uncertainty); and, in some cases, "aesthetic value," which seeks to refine one's own preferences. This formulation is a framework considered as an extension of the free energy principle and is called Active Inference.
+
+In the philosophy of Active Inference, such a cycle of perception and action is regarded as essentially "self-evidencing." Self-evidencing is the process of constantly proving one's own existence. That is, because it is inherently impossible for life to entertain the mental image of "a reality in which the self is not alive," the repetition of the least surprising event, "the reality of being alive," results in the persistence of life's survival.
+
+In summary, it has been shown that the belief system that "we possess a belief system in the first place" can itself be formalized through the frameworks of surprise minimization, variational free energy minimization, and expected free energy minimization. That is, it was found that the cycle of perception and action can be uniformly depicted as a "self-evidencing process" that approximates Bayesian inference, based on the value norm of "reducing surprise."
+
+Here, the initial objective of conceptually elucidating the substance of the belief system that "we possess a belief system" can be said to have been achieved for the time being. 

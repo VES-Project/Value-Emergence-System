@@ -2,13 +2,14 @@ import fs from "fs/promises"
 import path from "path"
 import { existsSync } from "fs"
 import matter from "gray-matter"
+import { worksManifest } from "../content/works/manifest"; // Remove WorkManifestItem import
 
 interface WorkFrontmatter {
   title: string
   date?: string
   authors?: string[]
   excerpt?: string
-  order?: number
+  // order?: number // Keep or remove based on whether other parts use it?
   [key: string]: unknown
 }
 
@@ -62,8 +63,13 @@ export interface WorkMeta {
   date: string
   authors?: string[]
   excerpt?: string
-  order?: number
 }
+
+// Create a map for quick lookup of published status and order index
+const manifestIndexMap = new Map<string, { index: number; published: boolean }>();
+worksManifest.forEach((item, index) => {
+  manifestIndexMap.set(item.slug, { index, published: item.published });
+});
 
 export async function getLatestWorks(
   locale: string,
@@ -80,7 +86,14 @@ export async function getLatestWorks(
     const worksPromises = files
       .filter((file) => file.endsWith(".mdx"))
       .map(async (file): Promise<WorkMeta | null> => {
-        const slug = file.replace(/\.mdx$/, "")
+        const slug = file.replace(/\.mdx$/, "");
+        const manifestEntry = manifestIndexMap.get(slug);
+
+        // Skip if not in manifest or not published
+        if (!manifestEntry || !manifestEntry.published) {
+          return null;
+        }
+
         const filePath = path.join(localeDir, file)
         const source = await fs.readFile(filePath, "utf8")
         const { data } = matter(source)
@@ -90,39 +103,23 @@ export async function getLatestWorks(
             return null;
         }
 
-        const order = typeof data.order === 'number' ? data.order : undefined;
-
         return {
           slug,
           title: data.title || "Untitled",
           date: data.date,
           authors: data.authors || [],
           excerpt: data.excerpt || "",
-          order: order,
         }
       })
 
     const worksWithNull = await Promise.all(worksPromises)
     const works = worksWithNull.filter((work): work is WorkMeta => work !== null)
 
+    // Sort based on manifest array index
     const sortedWorks = works.sort((a, b) => {
-      const orderA = a.order ?? Infinity;
-      const orderB = b.order ?? Infinity;
-
-      if (orderA !== orderB) {
-        return orderA - orderB;
-      }
-
-      try {
-        const dateA = new Date(a.date).getTime()
-        const dateB = new Date(b.date).getTime()
-        if (isNaN(dateA)) return 1
-        if (isNaN(dateB)) return -1
-        return dateB - dateA
-      } catch (e) {
-        console.error("Error parsing date for secondary sorting:", a.date, b.date, e)
-        return 0
-      }
+      const indexA = manifestIndexMap.get(a.slug)?.index ?? Infinity;
+      const indexB = manifestIndexMap.get(b.slug)?.index ?? Infinity;
+      return indexA - indexB;
     })
 
     return sortedWorks.slice(0, limit)
@@ -147,7 +144,14 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
     const worksPromises = files
       .filter((file) => file.endsWith(".mdx"))
       .map(async (file): Promise<WorkMeta | null> => {
-        const slug = file.replace(/\.mdx$/, "")
+        const slug = file.replace(/\.mdx$/, "");
+        const manifestEntry = manifestIndexMap.get(slug);
+
+        // Skip if not in manifest or not published
+        if (!manifestEntry || !manifestEntry.published) {
+          return null;
+        }
+
         const filePath = path.join(localeDir, file)
         const source = await fs.readFile(filePath, "utf8")
         const { data } = matter(source)
@@ -157,39 +161,23 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
             return null;
         }
 
-        const order = typeof data.order === 'number' ? data.order : undefined;
-
         return {
           slug,
           title: data.title || "Untitled",
           date: data.date,
           authors: data.authors || [],
           excerpt: data.excerpt || "",
-          order: order,
         }
       })
 
     const worksWithNull = await Promise.all(worksPromises)
     const works = worksWithNull.filter((work): work is WorkMeta => work !== null)
 
+    // Sort based on manifest array index
     return works.sort((a, b) => {
-      const orderA = a.order ?? Infinity;
-      const orderB = b.order ?? Infinity;
-
-      if (orderA !== orderB) {
-        return orderA - orderB;
-      }
-
-      try {
-        const dateA = new Date(a.date).getTime()
-        const dateB = new Date(b.date).getTime()
-        if (isNaN(dateA)) return 1
-        if (isNaN(dateB)) return -1
-        return dateB - dateA
-      } catch (e) {
-        console.error("Error parsing date for secondary sorting:", a.date, b.date, e)
-        return 0
-      }
+      const indexA = manifestIndexMap.get(a.slug)?.index ?? Infinity;
+      const indexB = manifestIndexMap.get(b.slug)?.index ?? Infinity;
+      return indexA - indexB;
     })
   } catch (error) {
     console.error("Error getting works:", error)

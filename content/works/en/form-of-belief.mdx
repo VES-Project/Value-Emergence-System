@@ -1,9 +1,84 @@
 ---
-title: "Form of Belief"
+title: "1.01 Form of Belief"
 date: "2025-04-17"
-order: 2
 authors: ["Naoki SHIMA", "Yotaro Matsui"]
-excerpt: ""
+excerpt: "Formalizes belief probabilistically and frames perception as a process of surprise minimization. Introduces the framework of variational free energy minimization."
 ---
 
-# Form of Belief 
+# Form of Belief
+
+Our perception is not merely a passive process of receiving external stimuli. Perception is the working of mental images that arise internally. To capture these workings, psychology posits constructs. A construct refers to a theoretical concept conveniently defined to explain internal states and psychological processes that cannot be directly observed. As an example of a construct, let us assume here that we hold beliefs that predict "reality will be like this" and a priori beliefs about "how the world should be."
+
+We feel surprise when reality differs from the predictions based on our beliefs. From the perspective of the meaning (value) of perception, reality is better the more it aligns with expectations. Therefore, we constantly update our beliefs, adjusting them to reduce the discrepancy between reality and prediction. We position this as the acquisition of a posteriori (empirical) beliefs.
+
+The term "belief" here is based on one of the two major trends in the philosophical interpretation of probability theory: the stance that views probability as the degree of belief about a certain object. Thus, we first formalize the belief that predicts "reality will be like this" probabilistically.
+
+Specifically, the degree of belief about how likely an event $o$ is to occur is represented by the probability $p(o)$. The magnitude of surprise at the occurrence of event $o$ is formally represented by a continuous function $f(p(o))$. This means that the magnitude of surprise $f(\cdot)$ depends on the belief (probability) $p(o)$. The continuity of the function implies that a change in probability value that causes a minute change in surprise is confined to a limited difference. The surprise $f(p(o))$ is empirically considered to satisfy the following properties:
+
+1.  There is no surprise at the occurrence of an event $o$ that is certain to happen. That is, $f(p(o))=f(1)=0$.
+
+2.  There is surprise at the occurrence of an event $o$ that is believed, to some extent, not to happen. That is, surprise takes a positive value in the range $[0,1)$ of probability $p$.
+
+3.  In a somewhat special case, suppose there is a communication reporting the occurrence of an event $O\supset o$ encompassing event $o$, followed by a communication reporting the occurrence of event $o$. The sum of the final surprise in this case is equal to the surprise of perceiving the occurrence of event $o$ at once. That is, $f(p(o))=f(p(O))+f(p(o)/p(O))$ holds. This implies that the addition law $f(xy)=f(x)+f(y)$ holds for surprise $f$.
+
+Solving the differential equation for $f(x)$ derived by assuming these properties yields the solution $f(x)=c\ln x+d,~c<0$. From this, surprise is generally defined as follows:
+
+Definition of Surprise (Shannon's surprise): The surprise upon the occurrence of an event with probability $p$ is defined as
+
+$$-\ln p, ~(0<p\leq 1)$$
+
+Thus, formalizing belief as probability derives surprise as negative logarithmic probability. Then, it is naturally shown by the monotonically decreasing nature of the negative logarithmic function that the smaller the degree of belief in an event occurring (i.e., the lower the probability), the greater the surprise when it occurs.
+
+With the formalization of surprise, the value norm that "reality is better the more it aligns with expectations" is also expressed as "surprise minimization." As mentioned earlier, we assumed that surprise minimization is positioned as the process of updating prior beliefs and acquiring empirical beliefs.
+
+Therefore, we formalize the prior belief about "how the world should be." Specifically, the degree of belief that a potential (unknowable) state of the world $x$ holds is represented by the probability $p(x)$, and how likely event $o$ is to occur under that state $x$ (likelihood) is represented by the conditional probability $p(o\mid x)$. In this case, the previously defined probability $p(o)$ is obtained in a marginalized form as follows:
+
+$$p(o)=\int p(x)p(o\mid x)dx$$
+
+By introducing an arbitrary function (probability distribution) $q(x)$ and using Jensen's inequality, we can evaluate the upper bound of surprise $-\ln p(o)$. The following is a typical derivation process:
+
+$$-\ln p(o)=-\ln\int p(x)p(o\mid x)dx=-\ln\int q(x)\frac{p(x)p(o\mid x)}{q(x)}dx$$
+
+Here, since $-\ln$ is a convex function, applying Jensen's inequality gives:
+
+$$-\ln p(o)\leq\int q(x)\left[-\ln\frac{p(x)p(o\mid x)}{q(x)}\right]dx=\int q(x)[\ln q(x)-\ln p(x,o)]dx$$
+
+Then, defining the right-hand side of the above equation as the functional
+
+$$F[q,o]:=\mathbb E_{q(x)}[\ln q(x)-\ln p(x,o)]$$
+
+we obtain
+
+$$-\ln p(o)\leq F[q,o]$$
+
+That is, surprise (Shannon's surprise) $-\ln p(o)$ becomes the lower bound of the functional $F[q,o]$ (or $F$ is the upper bound of surprise). The derived functional $F$ is known as "Free Energy," and surprise minimization boils down to the problem of finding the function $q(x)$ that minimizes free energy. Thus, the problem of minimizing the value of the functional $F$ with the function $q$ as the variable is called a "variational problem."
+
+Furthermore, the free energy $F[q,o]$ can be transformed as follows:
+
+$$F[q,o]=\mathbb E_{q(x)}[\ln q(x)-\ln p(x\mid o)]\underbrace{-\ln p(o)}_\text{Shannon's surprise}$$
+
+Here, Bayes' theorem is
+
+$$p(x\mid o)=\frac{p(x)p(o\mid x)}{p(o)}$$
+
+and $p(o)$ is the marginal likelihood mentioned earlier. From the above equation, it can be seen that the difference between $F[q,o]$ and surprise $-\ln p(o)$ is the Kullback–Leibler divergence, a measure known for quantifying the difference between two probability distributions.
+
+$$D_\mathrm {KL}[q(x)\Vert p(x\mid o)]=\mathbb E_{q(x)}[\ln q(x)-\ln p(x\mid o)]$$
+
+Therefore, free energy minimization is equivalent to the problem of finding $q(x)$ that minimizes $D_\mathrm {KL}[q(x)\Vert p(x\mid o)]$, i.e., approximating the empirical belief probability $p(x\mid o)$ in Bayesian inference.
+
+Also, the free energy $F[q,o]$ can be transformed into the following two equations:
+
+$$F[q,o]=\underbrace{-\mathbb E_{q(x)}[\ln p(o,x)]}_\text{energy}-\underbrace{\mathbb E_{q(x)}[-\ln q(x)]}_\text{Shannon's entropy}$$
+
+$$F[q,o]=\underbrace{\mathbb E_{q(x)}[\ln q(x)-\ln p(x)]}_\text{complexity}-\underbrace{\mathbb E_{q(x)}[\ln p(o\mid x)]}_\text{accuracy}$$
+
+The first equation provides a perspective for interpreting free energy by decomposing it into "energy" and "Shannon's entropy" terms. Here, the "energy" term is the expected value (sign inverted) of the logarithm of the joint probability $p(o,x)$ of the potential state of the world $x$ and event $o$ under the belief $q(x)$, and can be regarded as a measure of "how likely the system is to adopt a high-likelihood state." A smaller energy value means that event $o$ is more likely to occur under the state assumed by the belief $q(x)$.
+
+On the other hand, the "entropy" term is an indicator of how broadly the system considers the potential states it can take. The higher this entropy, the more the belief $q$ is said to be a "tolerant" belief that acknowledges diverse probabilities without being biased towards specific states. Let us touch upon the maximum entropy principle here. This principle asserts that "among the distributions satisfying the given constraints, the distribution with the maximum entropy is the least biased distribution (one that adds no unnecessary assumptions)." The inclusion of the entropy term (sign inverted) in free energy minimization suggests a natural consistency with the idea of the maximum entropy principle, which seeks to explain observations while avoiding bias and maintaining entropy as high as possible.
+
+Next, the second equation interprets free energy from two perspectives: "complexity" and "accuracy." Here, the "complexity" term corresponds to the KL divergence $D_\mathrm{KL}[q(x)\Vert p(x)]$, which indicates how much the approximate distribution $q(x)$ deviates from the prior distribution $p(x)$. In other words, the more an empirical belief departs from the prior belief, the greater the "complexity."
+
+On the other hand, the "accuracy" term is the expected value of the likelihood (log-likelihood), indicating how well the observation $o$ can be explained under the belief $q(x)$, representing the demand to enhance consistency with observed data. That is, free energy minimization is also related to the "bias-variance tradeoff" in statistical learning theory. In other words, this indicates an adaptive requirement to acquire empirical beliefs that reconcile the highest degree of generalization with maximum adaptation to specific events.
+
+From the above, we can see that our perceptual process can be formally described as "variational free energy minimization," an approximation of Bayesian inference based on the value norm of surprise minimization. This formalizes the sequence of mental processes where we hold probabilistic beliefs (predictions) about "how reality will be," feel surprise when those predictions are overturned by experience (phenomena) from the external world, and update our beliefs in a direction that reduces that surprise. This framework is the theory known as the Free energy principle, proposed by Karl Friston. 
