@@ -78,7 +78,7 @@ export async function getLatestWorks(
   try {
     const localeDir = path.join(process.cwd(), "content/works", locale)
     if (!existsSync(localeDir)) {
-      console.warn(`Directory does not exist, cannot get latest works: ${localeDir}`)
+      console.warn(`Directory does not exist, cannot get works: ${localeDir}`)
       return []
     }
     const files = await fs.readdir(localeDir)
@@ -124,7 +124,7 @@ export async function getLatestWorks(
 
     return sortedWorks.slice(0, limit)
   } catch (error) {
-    console.error("Error getting latest works:", error)
+    console.error("Error getting works:", error)
     return []
   }
 }

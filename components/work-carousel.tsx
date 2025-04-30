@@ -124,7 +124,7 @@ export function WorkCarousel({
     return (
       <section className="py-12 md:py-20 lg:py-24 bg-gradient-to-b from-background to-secondary/10">
         <div className="container px-4 md:px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Latest Works</h2>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Works</h2>
           <p>No works available yet.</p>
         </div>
       </section>
@@ -142,7 +142,7 @@ export function WorkCarousel({
     >
       <div className="container mx-auto">
         <div className="text-center mb-8"> 
-          <h2 className="text-3xl font-bold">Latest Works</h2>
+          <h2 className="text-3xl font-bold">Works</h2>
         </div>
 
         <div className="embla relative" ref={emblaNodeRef}>
