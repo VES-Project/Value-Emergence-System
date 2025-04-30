@@ -1,18 +1,10 @@
 import "server-only"
 
 export interface Dictionary {
-  header: {
-    home: string
-    concepts: string
-    works: string
-  }
   footer: {
     copyright: string
   }
   home: {
-    hero: {
-      title: string
-    }
     concepts: {
       items: Array<{
         title: string
@@ -26,10 +18,12 @@ export interface Dictionary {
     joinButtonText: string
   }
   works: {
-    title: string
     empty: string
     readMore: string
     authors: string
+  }
+  contributorsPage: {
+    description: string
   }
 }
 

@@ -5,11 +5,7 @@ import { CellularAutomatonBackground } from "./cellular-automaton-background"
 import { useAnimateOnScroll } from "@/hooks/useAnimateOnScroll"; // アニメーションフックをインポート
 import { cn } from "@/lib/utils"; // cn ユーティリティをインポート
 
-export function Hero({
-  title,
-}: {
-  title: string
-}) {
+export function Hero() {
   // アニメーション用のフックを呼び出す
   const { ref, isVisible } = useAnimateOnScroll();
 
@@ -27,8 +23,8 @@ export function Hero({
       {/* タイトル、オートマトン、ボタンを縦に並べる */}
       <div className="flex flex-col items-center w-full max-w-2xl mb-4"> {/* 幅を少し広げ、下マージン調整 */}
         {/* アイコン削除 */}
-        {/* タイトルを中央揃え */}
-        <h1 className="text-3xl md:text-5xl text-center mt-2 text-hero-foreground">{title}</h1> {/* text-hero-foregroundを使用 */}
+        {/* タイトルを中央揃え、ハードコード */}
+        <h1 className="text-3xl md:text-5xl text-center mt-2 text-hero-foreground">Value Emergence System</h1> {/* text-hero-foregroundを使用 */}
       </div>
 
       <div className="relative h-48 w-full max-w-4xl mx-auto mb-10"> {/* ★ 下マージン追加 */} 

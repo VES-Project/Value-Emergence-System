@@ -14,7 +14,7 @@ export default async function WorksPage({
 
   return (
     <div>
-      <PageHeader title={dict.works.title} />
+      <PageHeader title={"Works"} />
       <WorksList
         works={works}
         emptyText={dict.works.empty}

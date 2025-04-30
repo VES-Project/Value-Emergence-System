@@ -41,10 +41,9 @@ function AnimatedCard({ children, index }: { children: React.ReactNode, index: n
 
 
 export function ConceptSection({
-  title,
   concepts,
 }: {
-  title: string
+  // title?: string // Option 1: Make optional
   concepts: Array<{
     title: string
     description: string
@@ -62,8 +61,8 @@ export function ConceptSection({
         isSectionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
-      {/* 見出しも isSectionVisible に基づいて表示/非表示 */}
-      <h2 className="text-3xl font-bold text-center mb-12">{title}</h2>
+      {/* Hardcode the title or use a default */}
+      <h2 className="text-3xl font-bold text-center mb-12">Concepts</h2>
 
       <div className="grid grid-cols-1 gap-8">
         {concepts.map((concept, index) => (

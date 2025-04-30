@@ -1,16 +1,8 @@
 {
-  "header": {
-    "home": "ホーム",
-    "concepts": "概念",
-    "works": "作品"
-  },
   "footer": {
     "copyright": "著作権"
   },
   "home": {
-    "hero": {
-      "title": "価値創発システム"
-    },
     "concepts": {
       "items": [
         {
@@ -36,9 +28,11 @@
     "joinButtonText": "貢献する"
   },
   "works": {
-    "title": "作品",
     "empty": "利用可能な作品はまだありません。",
     "readMore": "続きを読む",
     "authors": "著者"
+  },
+  "contributorsPage": {
+    "description": "このプロジェクトへのコントリビューター一覧です。"
   }
 }

@@ -6,17 +6,7 @@ import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
 
-export function Header({
-  lang,
-  dictionary,
-}: {
-  lang: string
-  dictionary: {
-    home: string
-    concepts: string
-    works: string
-  }
-}) {
+export function Header({ lang }: { lang: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
@@ -38,13 +28,16 @@ export function Header({
               />
             </a>
             <Link href={`/${lang}`} className="hover:underline">
-              {dictionary.home}
+              Home
             </Link>
             <Link href={`/${lang}#concepts`} className="hover:underline">
-              {dictionary.concepts}
+              Concepts
             </Link>
             <Link href={`/${lang}#latest-works`} className="hover:underline">
-              {dictionary.works}
+              Works
+            </Link>
+            <Link href={`/${lang}/contributors`} className="hover:underline">
+              Contributors
             </Link>
             <LanguageSwitcher currentLang={lang} />
           </nav>
@@ -76,14 +69,17 @@ export function Header({
                 />
               </a>
               <Link href={`/${lang}`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
-                {dictionary.home}
+                Home
               </Link>
             </div>
             <Link href={`/${lang}#concepts`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
-              {dictionary.concepts}
+              Concepts
             </Link>
             <Link href={`/${lang}#latest-works`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
-              {dictionary.works}
+              Works
+            </Link>
+            <Link href={`/${lang}/contributors`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
+              Contributors
             </Link>
           </nav>
         </div>

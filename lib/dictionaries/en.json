@@ -1,16 +1,8 @@
 {
-  "header": {
-    "home": "Home",
-    "concepts": "Concepts",
-    "works": "Works"
-  },
   "footer": {
     "copyright": "Copyright"
   },
   "home": {
-    "hero": {
-      "title": "Value Emergence System"
-    },
     "concepts": {
       "items": [
         {
@@ -36,9 +28,11 @@
     "joinButtonText": "Contribute"
   },
   "works": {
-    "title": "Works",
     "empty": "No works available yet.",
     "readMore": "Read More",
     "authors": "Authors"
+  },
+  "contributorsPage": {
+    "description": "List of contributors to the project."
   }
 }

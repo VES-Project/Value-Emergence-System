@@ -16,18 +16,15 @@ export default async function Home({
   return (
     <div>
       <div id="hero" className="min-h-screen flex flex-col items-center justify-center">
-        <Hero 
-          title={dict.home.hero.title} 
-        />
+        <Hero />
       </div>
 
       <div className="min-h-screen flex items-center justify-center">
-        <ConceptSection title={dict.home.concepts.title} concepts={dict.home.concepts.items} />
+        <ConceptSection concepts={dict.home.concepts.items} />
       </div>
 
       <div id="latest-works" className="min-h-screen flex items-center justify-center">
         <WorkCarousel
-          title={dict.home.latestWorks.title}
           works={works.map(work => ({
             ...work,
             authors: work.authors ?? [],

@@ -2,14 +2,9 @@
 
 import dynamic from 'next/dynamic'
 
-// Define the props type based on the original Header component
+// Remove dictionary from props type
 type HeaderProps = {
   lang: string
-  dictionary: {
-    home: string
-    concepts: string
-    works: string
-  }
 }
 
 // Dynamically import the actual Header component with ssr: false
