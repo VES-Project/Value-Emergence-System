@@ -8,6 +8,7 @@ interface WorkFrontmatter {
   date?: string
   authors?: string[]
   excerpt?: string
+  order?: number
   [key: string]: unknown
 }
 
@@ -61,6 +62,7 @@ export interface WorkMeta {
   date: string
   authors?: string[]
   excerpt?: string
+  order?: number
 }
 
 export async function getLatestWorks(
@@ -88,12 +90,15 @@ export async function getLatestWorks(
             return null;
         }
 
+        const order = typeof data.order === 'number' ? data.order : undefined;
+
         return {
           slug,
           title: data.title || "Untitled",
           date: data.date,
           authors: data.authors || [],
           excerpt: data.excerpt || "",
+          order: order,
         }
       })
 
@@ -101,6 +106,13 @@ export async function getLatestWorks(
     const works = worksWithNull.filter((work): work is WorkMeta => work !== null)
 
     const sortedWorks = works.sort((a, b) => {
+      const orderA = a.order ?? Infinity;
+      const orderB = b.order ?? Infinity;
+
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+
       try {
         const dateA = new Date(a.date).getTime()
         const dateB = new Date(b.date).getTime()
@@ -108,7 +120,7 @@ export async function getLatestWorks(
         if (isNaN(dateB)) return -1
         return dateB - dateA
       } catch (e) {
-        console.error("Error parsing date for sorting:", a.date, b.date, e)
+        console.error("Error parsing date for secondary sorting:", a.date, b.date, e)
         return 0
       }
     })
@@ -145,12 +157,15 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
             return null;
         }
 
+        const order = typeof data.order === 'number' ? data.order : undefined;
+
         return {
           slug,
           title: data.title || "Untitled",
           date: data.date,
           authors: data.authors || [],
           excerpt: data.excerpt || "",
+          order: order,
         }
       })
 
@@ -158,6 +173,13 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
     const works = worksWithNull.filter((work): work is WorkMeta => work !== null)
 
     return works.sort((a, b) => {
+      const orderA = a.order ?? Infinity;
+      const orderB = b.order ?? Infinity;
+
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+
       try {
         const dateA = new Date(a.date).getTime()
         const dateB = new Date(b.date).getTime()
@@ -165,7 +187,7 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
         if (isNaN(dateB)) return -1
         return dateB - dateA
       } catch (e) {
-        console.error("Error parsing date for sorting:", a.date, b.date, e)
+        console.error("Error parsing date for secondary sorting:", a.date, b.date, e)
         return 0
       }
     })
