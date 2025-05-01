@@ -2,13 +2,64 @@
 
 This repository **is** the Value Emergence System itself, serving as an Open Science hub. It aims to foster the field of Value Emergence Systems Science by allowing anyone to contribute through various means, such as submitting articles or participating in discussions.
 
-## Setup Instructions
+## Development Environment Setup
 
-1.  **Install Node.js and pnpm:**
-    *   Ensure you have Node.js (check recommended version) and pnpm installed.
-2.  **Install Dependencies:**
+There are two ways to set up the development environment:
+
+### 1. Using Dev Containers (Recommended)
+
+This is the easiest way to get started. It ensures a consistent development environment with all dependencies and configurations pre-installed.
+
+**Prerequisites:**
+
+*   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+*   [Visual Studio Code](https://code.visualstudio.com/)
+*   [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for VS Code
+
+**Setup:**
+
+1.  Clone this repository.
+2.  Open the cloned repository folder in Visual Studio Code.
+3.  VS Code should automatically detect the `.devcontainer/devcontainer.json` file and prompt you to \"Reopen in Container\". Click on it.
+4.  Wait for the container to build and start. This might take a few minutes the first time as it downloads the base image and installs dependencies.
+5.  Once the container is ready, you can open a terminal within VS Code (Terminal > New Terminal) and run the development server:
+    ```bash
+    pnpm dev
+    ```
+
+### 2. Manual Setup
+
+If you prefer not to use Dev Containers, you can set up the environment manually.
+
+**Prerequisites:**
+
+*   Node.js (Check the version specified in `.devcontainer/devcontainer.json` or use the latest LTS version)
+*   pnpm (Install using `npm install -g pnpm` or follow [official instructions](https://pnpm.io/installation))
+
+**Setup:**
+
+1.  Clone this repository.
+2.  Navigate to the project root directory.
+3.  Install dependencies:
     ```bash
     pnpm install
+    ```
+4.  **Build Presentation Slides:** Slidev presentation assets are not included in the repository. You need to build them locally:
+    ```bash
+    # Build all existing presentations (check slugs in slidev-decks/)
+    pnpm run build-slides --slug=introduction
+    pnpm run build-slides --slug=test-slide
+    # Add commands for other slugs if they exist
+    ```
+5.  **(Optional) Install Playwright for Thumbnail Generation:** If you need to generate presentation thumbnails, install Playwright browsers:
+    ```bash
+    pnpm exec playwright install --with-deps
+    ```
+    *Note: You might need to install additional OS dependencies for Playwright depending on your system. The command `pnpm exec playwright install --with-deps` attempts to install these, but manual installation might be required (see Playwright documentation). The `prepare:slide:deps` or `generate-thumbnail` scripts also handle this, but require a slug.* 
+
+6.  Start the development server:
+    ```bash
+    pnpm dev
     ```
 
 ## Available Commands

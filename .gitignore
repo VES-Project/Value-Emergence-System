@@ -26,8 +26,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# pnpm store
+.pnpm-store
 # Mac
-**/.DS_Store
+*.DS_Store
 
 # Slidev build output
 /public/*/presentations/
