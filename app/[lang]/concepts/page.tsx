@@ -1,9 +1,18 @@
 import { getDictionary } from "@/lib/dictionaries";
-import { getAllPresentations } from "@/lib/mdx";
+// Remove getAllPresentations import
+// import { getAllPresentations } from "@/lib/mdx";
 import { Metadata } from "next";
-import { PresentationCard } from "@/components/presentations/presentation-card";
+// Remove PresentationCard import if no longer used directly on this page
+// import { PresentationCard } from "@/components/presentations/presentation-card";
+import { PresentationCarousel } from "@/components/presentations/presentation-carousel"; // Import the carousel
+// Import the manifest directly
+import { presentationsManifest } from "@/content/presentations/manifest";
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
   const resolvedParams = await params;
   const dict = await getDictionary(resolvedParams.lang);
   return {
@@ -12,11 +21,16 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
-export default async function ConceptsPage({ params }: { params: Promise<{ lang: string }> }) {
+export default async function ConceptsPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
   const resolvedParams = await params;
   const { lang } = resolvedParams;
   const dict = await getDictionary(lang);
-  const presentations = await getAllPresentations(lang);
+  // Get presentations directly from the manifest
+  const presentations = presentationsManifest.filter((p) => p.published);
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20">
@@ -28,22 +42,13 @@ export default async function ConceptsPage({ params }: { params: Promise<{ lang:
       </p>
 
       {presentations.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {presentations.map((presentation) => {
-            return (
-              <PresentationCard
-                key={presentation.slug}
-                lang={lang}
-                presentation={presentation}
-                title={presentation.title}
-                description={presentation.description}
-              />
-            );
-          })}
-        </div>
+        // Pass the manifest data directly to the carousel
+        <PresentationCarousel presentations={presentations} lang={lang} />
       ) : (
-        <p className="text-center text-muted-foreground">No presentations available yet.</p>
+        <p className="text-center text-muted-foreground">
+          No presentations available yet.
+        </p>
       )}
     </div>
   );
-} 
+}
