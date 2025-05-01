@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAnimateOnScroll } from "@/hooks/useAnimateOnScroll"
 import { icons } from 'lucide-react';
+import Link from "next/link";
 
 interface IconProps {
   name: string;
@@ -39,18 +40,13 @@ function AnimatedCard({ children, index }: { children: React.ReactNode, index: n
   )
 }
 
+export interface ConceptItem {
+  title: string;
+  description: string;
+  icon: keyof typeof icons;
+}
 
-export function ConceptSection({
-  concepts,
-}: {
-  // title?: string // Option 1: Make optional
-  concepts: Array<{
-    title: string
-    description: string
-    icon: string
-  }>
-}) {
-  // ConceptSection全体をアニメーションさせるためのフック
+export function ConceptSection({ concepts, lang }: { concepts: ConceptItem[], lang: string }) {
   const { ref: sectionRef, isVisible: isSectionVisible } = useAnimateOnScroll()
 
   return (
@@ -81,6 +77,9 @@ export function ConceptSection({
             </Card>
           </AnimatedCard>
         ))}
+      </div>
+      <div className="text-center mt-8">
+        <Link href={`/${lang}/concepts`} className="hover:underline">詳しく見る</Link>
       </div>
     </section>
   )

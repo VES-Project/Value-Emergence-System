@@ -29,6 +29,9 @@ export interface Dictionary {
   contributorsPage: {
     description: string
   }
+  concepts?: {
+    description: string;
+  };
 }
 
 const dictionaries: Record<string, () => Promise<Dictionary>> = {

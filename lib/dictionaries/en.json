@@ -38,5 +38,8 @@
   },
   "contributorsPage": {
     "description": "List of contributors to the project."
+  },
+  "concepts": {
+    "description": "Learn more about the core concepts behind this project."
   }
 }

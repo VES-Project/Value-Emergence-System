@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero"
 import { ConceptSection } from "@/components/concepts"
 import { WorkCarousel } from "@/components/work-carousel"
 import { getAllWorks } from "@/lib/mdx"
+import type { ConceptItem } from "@/components/concepts"
 
 export default async function Home({
   params,
@@ -20,10 +21,10 @@ export default async function Home({
       </div>
 
       <div className="min-h-screen flex items-center justify-center">
-        <ConceptSection concepts={dict.home.concepts.items} />
+        <ConceptSection concepts={dict.home.concepts.items as ConceptItem[]} lang={lang} />
       </div>
 
-      <div id="latest-works" className="min-h-screen flex items-center justify-center">
+      <div id="works" className="min-h-screen flex items-center justify-center">
         <WorkCarousel
           works={works.map(work => ({
             ...work,

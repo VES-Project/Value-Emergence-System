@@ -55,7 +55,7 @@ export function Header({
               <Link href={`/${lang}#concepts`} className="hover:underline">
                 Concepts
               </Link>
-              <Link href={`/${lang}#latest-works`} className="hover:underline">
+              <Link href={`/${lang}#works`} className="hover:underline">
                 Works
               </Link>
               <Link href={`/${lang}/contributors`} className="hover:underline">
@@ -97,7 +97,7 @@ export function Header({
               <Link href={`/${lang}#concepts`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
                 Concepts
               </Link>
-              <Link href={`/${lang}#latest-works`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
+              <Link href={`/${lang}#works`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
                 Works
               </Link>
               <Link href={`/${lang}/contributors`} className="hover:underline" onClick={() => setIsMenuOpen(false)}>
