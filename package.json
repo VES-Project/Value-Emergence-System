@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:slide:ja": "pnpm --filter ${npm_config_slug}-slides exec slidev build slides.ja.md --base /ja/presentations/${npm_config_slug}/ --out ../../public/ja/presentations/${npm_config_slug}",
+    "build:slide:en": "pnpm --filter ${npm_config_slug}-slides exec slidev build slides.en.md --base /en/presentations/${npm_config_slug}/ --out ../../public/en/presentations/${npm_config_slug}",
+    "build-slides": "echo \"Building slides for: ${npm_config_slug}\" && pnpm run build:slide:ja --slug=$1 && pnpm run build:slide:en --slug=$1",
+    "prepare:slide:deps": "echo \"Preparing dependencies for: ${npm_config_slug}\" && pnpm --filter ${npm_config_slug}-slides add -D playwright-chromium && pnpm --filter ${npm_config_slug}-slides exec playwright install --with-deps",
+    "export:slide:thumb": "echo \"Exporting thumbnail for: ${npm_config_slug}\" && pnpm --filter ${npm_config_slug}-slides exec slidev export slides.en.md --format png --range 1 --output ../../public/images/thumbnails/temp-export && mv public/images/thumbnails/temp-export/1.png public/images/thumbnails/${npm_config_slug}.png && rm -rf public/images/thumbnails/temp-export",
+    "generate-thumbnail": "pnpm run prepare:slide:deps --slug=$1 && pnpm run export:slide:thumb --slug=$1"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

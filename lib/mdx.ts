@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import path from "path";
 import { existsSync } from "fs"
 import { worksManifest } from "../content/works/manifest"; // manifest をインポート
-import { presentationsManifest, type PresentationManifestItem } from "@/content/presentations/manifest";
+import { presentationsManifest } from "@/content/presentations/manifest";
 
 interface WorkFrontmatter {
   title: string
@@ -290,15 +290,27 @@ export async function getAllContributors(locale: string): Promise<ContributorMet
 
 // --- Presentation Types and Functions ---
 
-export interface PresentationMeta extends PresentationManifestItem {
-  // Add any additional processed fields if needed later
+// Updated PresentationMeta to hold locale-specific title/description
+export interface PresentationMeta {
+  slug: string;
+  thumbnail?: string;
+  published: boolean;
+  title: string; // Locale-specific title
+  description: string; // Locale-specific description
 }
 
 export async function getAllPresentations(locale: string): Promise<PresentationMeta[]> {
-  // Currently, just returns published items from the manifest.
-  // Locale is passed for potential future use (e.g., filtering based on locale-specific manifest).
-  // Sort based on manifest order
+  const fallbackLocale = 'en'; // Define a fallback locale
+
   return presentationsManifest
     .filter(p => p.published)
-    .map(p => ({ ...p })); // Return a copy
+    .map(p => ({
+      slug: p.slug,
+      thumbnail: p.thumbnail,
+      published: p.published,
+      // Get title for the current locale, fallback to English, then slug
+      title: p.title[locale] ?? p.title[fallbackLocale] ?? p.slug,
+      // Get description for the current locale, fallback to English, then empty string
+      description: p.description[locale] ?? p.description[fallbackLocale] ?? '',
+    }));
 }

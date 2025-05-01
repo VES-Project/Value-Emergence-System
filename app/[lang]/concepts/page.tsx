@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const resolvedParams = await params;
   const dict = await getDictionary(resolvedParams.lang);
   return {
-    title: dict.presentations.pageTitle,
+    title: "Presentations",
     description: dict.presentations.pageDescription,
   };
 }
@@ -21,7 +21,7 @@ export default async function ConceptsPage({ params }: { params: Promise<{ lang:
   return (
     <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20">
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl mb-2 text-center">
-        {dict.presentations.pageTitle}
+        Presentations
       </h1>
       <p className="text-lg text-muted-foreground mb-12 text-center">
         {dict.presentations.pageDescription}
@@ -30,17 +30,13 @@ export default async function ConceptsPage({ params }: { params: Promise<{ lang:
       {presentations.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {presentations.map((presentation) => {
-            const presentationDict = dict.presentations.items[presentation.slug];
-            const title = presentationDict?.title ?? presentation.slug;
-            const description = presentationDict?.description ?? '';
-
             return (
               <PresentationCard
                 key={presentation.slug}
                 lang={lang}
                 presentation={presentation}
-                title={title}
-                description={description}
+                title={presentation.title}
+                description={presentation.description}
               />
             );
           })}

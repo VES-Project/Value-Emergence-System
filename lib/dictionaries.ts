@@ -35,14 +35,7 @@ export interface Dictionary {
     description: string;
   };
   presentations: {
-    pageTitle: string;
     pageDescription: string;
-    items: {
-      [slug: string]: {
-        title: string;
-        description: string;
-      }
-    }
   }
 }
 
