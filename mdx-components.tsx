@@ -1,6 +1,8 @@
 import type { MDXComponents } from 'mdx/types'
 import Image, { ImageProps } from 'next/image'
 import { Alert } from '@/components/mdx/mdx-alert'
+import { Columns } from '@/components/mdx/mdx-columns'
+import { Column } from '@/components/mdx/mdx-column'
 import React from 'react'
 
 // MDX内で使用するカスタムコンポーネントやHTMLタグのスタイルを定義
@@ -23,6 +25,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // カスタムコンポーネントを登録
     Alert: Alert,
     Image: Image, // next/image の Image コンポーネントを提供
+    Columns: Columns,
+    Column: Column,
     // 他のHTMLタグのスタイルをカスタマイズすることも可能
     // h1: ({ children }) => <h1 style={{ color: 'tomato' }}>{children}</h1>,
     ...components, // 既存のコンポーネント設定をマージ

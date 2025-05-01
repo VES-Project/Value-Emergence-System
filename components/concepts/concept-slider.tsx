@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ConceptSlide } from '@/lib/mdx';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize, Minimize } from 'lucide-react';
 import { useMDXComponents } from '@/mdx-components'; // mdx-components.tsx をインポート
 
 interface ConceptSliderProps {
@@ -20,6 +20,8 @@ export function ConceptSlider({ slides }: ConceptSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [serializedSlides, setSerializedSlides] = useState<SerializedSlide[]>([]);
   const components = useMDXComponents({}); // MDXコンポーネントを取得
+  const [isFullscreen, setIsFullscreen] = useState(false); // 全画面状態
+  const sliderRef = useRef<HTMLDivElement>(null); // スライダーコンテナへの参照
 
   useEffect(() => {
     // クライアントサイドでMDXをシリアライズ
@@ -39,6 +41,37 @@ export function ConceptSlider({ slides }: ConceptSliderProps) {
     };
     serializeContent();
   }, [slides]);
+
+  // 全画面切り替え関数
+  const toggleFullscreen = () => {
+    if (!sliderRef.current) return;
+
+    if (!document.fullscreenElement) {
+      sliderRef.current.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  // 全画面状態の変更を監視
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    // iOS Safari 用のプレフィックス付きイベントも考慮
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   const totalSlides = serializedSlides.length;
 
@@ -86,10 +119,10 @@ export function ConceptSlider({ slides }: ConceptSliderProps) {
   const activeSlide = serializedSlides[currentSlide];
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto overflow-hidden border rounded-lg shadow-lg p-6 bg-background">
+    <div ref={sliderRef} className="relative w-full max-w-3xl mx-auto overflow-hidden border rounded-lg shadow-lg bg-background aspect-video">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
-          key={currentSlide} // key を変更して再レンダリングをトリガー
+          key={currentSlide}
           custom={direction}
           variants={slideVariants}
           initial="enter"
@@ -99,7 +132,7 @@ export function ConceptSlider({ slides }: ConceptSliderProps) {
             x: { type: "spring", stiffness: 300, damping: 30 },
             opacity: { duration: 0.2 }
           }}
-          className="prose dark:prose-invert max-w-none" // prose スタイル適用
+          className="absolute inset-0 p-6 flex flex-col justify-center prose prose-xs dark:prose-invert max-w-none"
         >
           <h2 className="text-2xl font-bold mb-4">{activeSlide.title}</h2>
           <MDXRemote {...activeSlide.mdxSource} components={components} />
@@ -126,11 +159,18 @@ export function ConceptSlider({ slides }: ConceptSliderProps) {
         </button>
       </div>
 
-      {/* Slide Indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+      {/* Slide Indicator and Fullscreen Button */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-10">
         <span className="text-sm text-gray-500">
           {currentSlide + 1} / {totalSlides}
         </span>
+        <button
+          onClick={toggleFullscreen}
+          className="p-1 rounded-full bg-gray-800 text-white opacity-75 hover:opacity-100"
+          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        >
+          {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+        </button>
       </div>
     </div>
   );
