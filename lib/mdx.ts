@@ -1,4 +1,3 @@
-// import { Publication } from "@/types";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
@@ -10,7 +9,6 @@ interface WorkFrontmatter {
   date?: string
   authors?: string[]
   excerpt?: string
-  // order?: number // Keep or remove based on whether other parts use it?
   [key: string]: unknown
 }
 

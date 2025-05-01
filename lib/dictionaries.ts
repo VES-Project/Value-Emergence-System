@@ -10,6 +10,7 @@ export interface Dictionary {
   }
   home: {
     concepts: {
+      viewDetails: string;
       items: Array<{
         title: string
         description: string

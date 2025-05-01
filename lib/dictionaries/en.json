@@ -12,12 +12,14 @@
         {
           "title": "Exploring the Universality and Plurality of Values",
           "description": "Using the free energy principle as a clue, we explore the relationship between the universality of truth, goodness, and beauty across eras and cultures, and the plurality of values.",
-          "icon": "Sun"
+          "icon": "Sun",
+          "viewDetails": ""
         },
         {
           "title": "Elucidation of Historical Social Structures through Information Theory and Thermodynamics",
           "description": "Reinterpreting Kojin Karatani's 'The Structure of World History' using information theory and thermodynamics to unravel the dynamics of historical social structures.",
-          "icon": "Atom"
+          "icon": "Atom",
+          "viewDetails": ""
         },
         {
           "title": "The Law of Least Cost Towards Fated Harmony",

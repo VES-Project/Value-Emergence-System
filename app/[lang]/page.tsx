@@ -25,7 +25,7 @@ export default async function Home({
         <ConceptSection
           concepts={dict.home.concepts.items as ConceptItem[]}
           lang={lang}
-          viewDetailsText={(dict.home.concepts as any).viewDetails}
+          viewDetailsText={dict.home.concepts['viewDetails']}
         />
       </div>
 

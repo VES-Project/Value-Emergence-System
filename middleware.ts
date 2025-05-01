@@ -17,13 +17,18 @@ function getLocale(request: NextRequest) {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
-  // Skip static files, API routes, and /presentations/
+  // Check if the pathname starts with any locale followed by /presentations/
+  const isPresentationPath = locales.some((locale) =>
+    pathname.startsWith(`/${locale}/presentations/`)
+  )
+
+  // Skip static files, API routes, images, and presentation paths
   const staticFileRegex = /\.(.*)$/
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/images") ||
-    pathname.startsWith("/presentations/") || // Exclude presentation path
+    isPresentationPath || // Use the new check
     pathname === "/favicon.ico" ||
     staticFileRegex.test(pathname)
   ) {
@@ -52,6 +57,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Run middleware for paths not starting with specific prefixes (api, _next, files, images, presentations)
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|images|presentations).*)"],
+  // Run middleware for paths not starting with specific prefixes (api, _next, files, images)
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|images).*)/"],
 }
