@@ -45,5 +45,15 @@
   },
   "concepts": {
     "description": "Learn more about the core concepts behind this project."
+  },
+  "presentations": {
+    "pageTitle": "Presentations",
+    "pageDescription": "Explore our presentations.",
+    "items": {
+      "introduction": {
+        "title": "Introduction to the Value Emergence System",
+        "description": "A brief overview of the core ideas."
+      }
+    }
   }
 }

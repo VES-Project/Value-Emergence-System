@@ -45,5 +45,15 @@
   },
   "concepts": {
     "description": "このプロジェクトの中心となるコンセプトについて詳しく説明します。"
+  },
+  "presentations": {
+    "pageTitle": "プレゼンテーション",
+    "pageDescription": "プレゼンテーション一覧です。",
+    "items": {
+      "introduction": {
+        "title": "価値創発システム入門",
+        "description": "中心となる考え方の概要です。"
+      }
+    }
   }
 }

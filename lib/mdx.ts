@@ -3,6 +3,7 @@ import matter from "gray-matter";
 import path from "path";
 import { existsSync } from "fs"
 import { worksManifest } from "../content/works/manifest"; // manifest をインポート
+import { presentationsManifest, type PresentationManifestItem } from "@/content/presentations/manifest";
 
 interface WorkFrontmatter {
   title: string
@@ -285,4 +286,19 @@ export async function getAllContributors(locale: string): Promise<ContributorMet
     console.error("Error getting contributors:", error)
     return []
   }
+}
+
+// --- Presentation Types and Functions ---
+
+export interface PresentationMeta extends PresentationManifestItem {
+  // Add any additional processed fields if needed later
+}
+
+export async function getAllPresentations(locale: string): Promise<PresentationMeta[]> {
+  // Currently, just returns published items from the manifest.
+  // Locale is passed for potential future use (e.g., filtering based on locale-specific manifest).
+  // Sort based on manifest order
+  return presentationsManifest
+    .filter(p => p.published)
+    .map(p => ({ ...p })); // Return a copy
 }
