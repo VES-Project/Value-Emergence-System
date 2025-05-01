@@ -1,4 +1,4 @@
-import { CellularAutomatonBackground } from "@/components/cellular-automaton-background";
+import { CellularAutomatonBackground } from "@/components/misc/cellular-automaton-background";
 
 export default function Loading() {
   return (

@@ -7,7 +7,7 @@ import MarkdownIt from "markdown-it"
 import katex from "katex"
 import "katex/dist/katex.min.css"
 import "highlight.js/styles/github.css"
-import { DynamicSvgLoader } from './dynamic-svg-loader'
+import { DynamicSvgLoader } from '../common/dynamic-svg-loader'
 import markdownItHighlightJs from "markdown-it-highlightjs"
 import type { HLJSApi } from 'highlight.js'
 

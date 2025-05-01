@@ -1,6 +1,6 @@
 import { getDictionary } from "@/lib/dictionaries"
-import { PageHeader } from "@/components/page-header"
-import { WorksList } from "@/components/works-list"
+import { PageHeader } from "@/components/common/page-header"
+import { WorksList } from "@/components/works/works-list"
 import { getAllWorks } from "@/lib/mdx"
 
 export default async function WorksPage({

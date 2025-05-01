@@ -1,8 +1,9 @@
-import fs from "fs/promises"
-import path from "path"
+// import { Publication } from "@/types";
+import fs from "fs";
+import matter from "gray-matter";
+import path from "path";
 import { existsSync } from "fs"
-import matter from "gray-matter"
-import { worksManifest } from "../content/works/manifest"; // Remove WorkManifestItem import
+import { worksManifest } from "../content/works/manifest"; // manifest をインポート
 
 interface WorkFrontmatter {
   title: string
@@ -25,7 +26,7 @@ export async function getAllWorkSlugs(locale: string): Promise<string[]> {
       console.warn(`Directory does not exist, cannot get slugs: ${localeDir}`)
       return []
     }
-    const files = await fs.readdir(localeDir)
+    const files = await fs.promises.readdir(localeDir)
     return files.filter((file) => file.endsWith(".mdx")).map((file) => file.replace(/\.mdx$/, ""))
   } catch (error) {
     console.error("Error getting work slugs:", error)
@@ -43,7 +44,7 @@ export async function getWorkBySlug(
       console.error(`Work file does not exist: ${filePath}`)
       return null
     }
-    const source = await fs.readFile(filePath, "utf8")
+    const source = await fs.promises.readFile(filePath, "utf8")
     const { data, content } = matter(source)
 
     return {
@@ -67,6 +68,8 @@ export interface WorkMeta {
 
 // Create a map for quick lookup of published status and order index
 const manifestIndexMap = new Map<string, { index: number; published: boolean }>();
+
+// Populate the map from the manifest
 worksManifest.forEach((item, index) => {
   manifestIndexMap.set(item.slug, { index, published: item.published });
 });
@@ -81,7 +84,7 @@ export async function getLatestWorks(
       console.warn(`Directory does not exist, cannot get works: ${localeDir}`)
       return []
     }
-    const files = await fs.readdir(localeDir)
+    const files = await fs.promises.readdir(localeDir)
 
     const worksPromises = files
       .filter((file) => file.endsWith(".mdx"))
@@ -95,7 +98,7 @@ export async function getLatestWorks(
         }
 
         const filePath = path.join(localeDir, file)
-        const source = await fs.readFile(filePath, "utf8")
+        const source = await fs.promises.readFile(filePath, "utf8")
         const { data } = matter(source)
 
         if (!data.date || typeof data.date !== 'string') {
@@ -139,7 +142,7 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
       console.warn(`Directory does not exist, cannot get all works: ${localeDir}`)
       return []
     }
-    const files = await fs.readdir(localeDir)
+    const files = await fs.promises.readdir(localeDir)
 
     const worksPromises = files
       .filter((file) => file.endsWith(".mdx"))
@@ -153,7 +156,7 @@ export async function getAllWorks(locale: string): Promise<WorkMeta[]> {
         }
 
         const filePath = path.join(localeDir, file)
-        const source = await fs.readFile(filePath, "utf8")
+        const source = await fs.promises.readFile(filePath, "utf8")
         const { data } = matter(source)
 
         if (!data.date || typeof data.date !== 'string') {
@@ -218,7 +221,7 @@ export async function getAllContributors(locale: string): Promise<ContributorMet
       console.warn(`Contributor directory does not exist: ${localeDir}`)
       return []
     }
-    const files = await fs.readdir(localeDir)
+    const files = await fs.promises.readdir(localeDir)
 
     const contributorsPromises = files
       .filter((file) => file.endsWith(".mdx") && file !== 'template.mdx')
@@ -226,7 +229,7 @@ export async function getAllContributors(locale: string): Promise<ContributorMet
         const slug = file.replace(/\.mdx$/, "")
         const filePath = path.join(localeDir, file)
         try {
-          const source = await fs.readFile(filePath, "utf8")
+          const source = await fs.promises.readFile(filePath, "utf8")
           const { data, content } = matter(source)
           const frontmatter = data as ContributorFrontmatter
 
@@ -284,4 +287,49 @@ export async function getAllContributors(locale: string): Promise<ContributorMet
     console.error("Error getting contributors:", error)
     return []
   }
+}
+
+// Concept Slide Data Structure
+export interface ConceptSlide {
+  slug: string; // ファイル名から生成 (例: 01-intro)
+  order: number;
+  title: string;
+  content: string; // MDX の本文
+}
+
+const conceptsDirectory = path.join(process.cwd(), "content/concepts");
+
+export async function getAllConceptSlides(lang: string): Promise<ConceptSlide[]> {
+  const langDirectory = path.join(conceptsDirectory, lang);
+  let filenames: string[] = [];
+  try {
+    filenames = fs.readdirSync(langDirectory);
+  } catch {
+    // 言語ディレクトリが存在しない場合は空配列を返す
+    console.warn(`Directory not found: ${langDirectory}`);
+    return [];
+  }
+
+  const slides = filenames
+    .filter((filename) => filename.endsWith(".mdx"))
+    .map((filename) => {
+      const filePath = path.join(langDirectory, filename);
+      const fileContents = fs.readFileSync(filePath, "utf8");
+      const { data, content } = matter(fileContents);
+
+      // スラグをファイル名から生成 (拡張子と順序番号を除去)
+      const slug = filename.replace(/\.[^/.]+$/, "").replace(/^\d+-/, "");
+
+      return {
+        slug,
+        order: data.order || 0, // order がなければ 0
+        title: data.title || "Untitled Slide", // title がなければ設定
+        content,
+      } as ConceptSlide;
+    });
+
+  // order プロパティでソート
+  slides.sort((a, b) => a.order - b.order);
+
+  return slides;
 }

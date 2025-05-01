@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import { LanguageSwitcher } from "./language-switcher"
+import { LanguageSwitcher } from "../common/language-switcher"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"

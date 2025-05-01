@@ -1,7 +1,7 @@
 import type React from "react"
 import "../globals.css"
-import { ClientHeader } from "@/components/client-header"
-import { Footer } from "@/components/footer"
+import { ClientHeader } from "@/components/layout/client-header"
+import { Footer } from "@/components/layout/footer"
 import { getDictionary } from "@/lib/dictionaries"
 
 export async function generateStaticParams() {

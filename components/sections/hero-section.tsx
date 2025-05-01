@@ -1,7 +1,7 @@
 'use client'
 
 import type React from "react"
-import { CellularAutomatonBackground } from "./cellular-automaton-background"
+import { CellularAutomatonBackground } from "../misc/cellular-automaton-background"
 import { useAnimateOnScroll } from "@/hooks/useAnimateOnScroll"; // アニメーションフックをインポート
 import { cn } from "@/lib/utils"; // cn ユーティリティをインポート
 

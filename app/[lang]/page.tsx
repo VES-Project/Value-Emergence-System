@@ -1,9 +1,9 @@
 import { getDictionary } from "@/lib/dictionaries"
-import { Hero } from "@/components/hero"
-import { ConceptSection } from "@/components/concepts"
-import { WorkCarousel } from "@/components/work-carousel"
+import { Hero } from "@/components/sections/hero-section"
+import { ConceptSection } from "@/components/concepts/concept-section"
+import { WorkCarousel } from "@/components/works/work-carousel"
 import { getAllWorks } from "@/lib/mdx"
-import type { ConceptItem } from "@/components/concepts"
+import type { ConceptItem } from "@/components/concepts/concept-section"
 
 export default async function Home({
   params,
