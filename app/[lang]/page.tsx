@@ -11,6 +11,7 @@ export default async function Home({
   params: Promise<{ lang: string }>
 }) {
   const { lang } = await params
+
   const dict = await getDictionary(lang)
   const works = await getAllWorks(lang)
 

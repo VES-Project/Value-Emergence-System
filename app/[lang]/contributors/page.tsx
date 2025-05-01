@@ -3,7 +3,8 @@ import { getDictionary } from '@/lib/dictionaries';
 import { getAllContributors } from '@/lib/mdx'; // Remove ContributorMeta
 import Image from 'next/image'; // Import Image for potential future use
 
-export default async function ContributorsPage({ params: { lang } }: { params: { lang: string } }) {
+export default async function ContributorsPage({ params }: { params: { lang: string } }) {
+  const { lang } = await params;
   const dictionary = await getDictionary(lang);
   const contributors = await getAllContributors(lang); // Fetch contributors
 
