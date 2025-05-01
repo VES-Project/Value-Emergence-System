@@ -21,7 +21,11 @@ export default async function Home({
       </div>
 
       <div className="min-h-screen flex items-center justify-center">
-        <ConceptSection concepts={dict.home.concepts.items as ConceptItem[]} lang={lang} />
+        <ConceptSection
+          concepts={dict.home.concepts.items as ConceptItem[]}
+          lang={lang}
+          viewDetailsText={dict.home.concepts.viewDetails}
+        />
       </div>
 
       <div id="works" className="min-h-screen flex items-center justify-center">

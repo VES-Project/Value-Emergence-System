@@ -46,7 +46,7 @@ export interface ConceptItem {
   icon: keyof typeof icons;
 }
 
-export function ConceptSection({ concepts, lang }: { concepts: ConceptItem[], lang: string }) {
+export function ConceptSection({ concepts, lang, viewDetailsText }: { concepts: ConceptItem[], lang: string, viewDetailsText: string }) {
   const { ref: sectionRef, isVisible: isSectionVisible } = useAnimateOnScroll()
 
   return (
@@ -79,7 +79,9 @@ export function ConceptSection({ concepts, lang }: { concepts: ConceptItem[], la
         ))}
       </div>
       <div className="text-center mt-8">
-        <Link href={`/${lang}/concepts`} className="hover:underline">詳しく見る</Link>
+        <Link href={`/${lang}/concepts`} className="hover:underline">
+          {viewDetailsText}
+        </Link>
       </div>
     </section>
   )

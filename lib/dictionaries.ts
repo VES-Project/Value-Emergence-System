@@ -14,6 +14,7 @@ export interface Dictionary {
         title: string
         description: string
         icon: string
+        viewDetails: string
       }>
     }
     latestWorks: {
