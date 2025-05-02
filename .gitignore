@@ -33,3 +33,6 @@ next-env.d.ts
 
 # Slidev build output
 /public/*/presentations/
+
+# Firebase CLIによって自動生成されるファイル
+.firebase/*

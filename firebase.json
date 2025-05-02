@@ -1,7 +1,9 @@
 {
-  "hosting": {
-    "apphosting": {
-      "backend": "ves-web-backend"
+  "hosting": [
+    {
+      "site": "value-emergence-system-3de5d",
+      "public": "public",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
     }
-  }
+  ]
 }
