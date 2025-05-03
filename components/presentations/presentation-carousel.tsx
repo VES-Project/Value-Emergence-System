@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import useEmblaCarousel, { UseEmblaCarouselType } from "embla-carousel-react";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
