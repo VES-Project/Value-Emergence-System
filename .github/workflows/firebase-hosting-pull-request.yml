@@ -17,6 +17,11 @@ jobs:
         with:
           version: 8 # 必要に応じてバージョンを指定してください
       - run: pnpm install
+      - name: Build Slidev Presentations
+        run: |
+          pnpm run build-slides --slug=value-universality
+          pnpm run build-slides --slug=social-structure
+          pnpm run build-slides --slug=pragmatism
       - run: pnpm build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
