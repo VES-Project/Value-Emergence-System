@@ -1,29 +1,29 @@
-import type React from "react"
-import "./globals.css"
-import "katex/dist/katex.min.css"
-import "highlight.js/styles/github.css"
-import { Noto_Serif_JP } from "next/font/google"
-import type { Metadata } from "next"
+import type React from "react";
+import "./globals.css";
+import "katex/dist/katex.min.css";
+import "highlight.js/styles/github.css";
+import { Noto_Serif_JP } from "next/font/google";
+import type { Metadata } from "next";
 
 const notoSerifJP = Noto_Serif_JP({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   title: "Value Emergence System",
-  description: "Research on complex adaptive systems and value emergence",
-  generator: 'v0.dev',
+  description: "Open Research on complex adaptive systems and value emergence",
+  generator: "v0.dev",
   icons: {
-    icon: '/favicon.ico',
+    icon: "/favicon.ico",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="ja">
@@ -54,5 +54,5 @@ export default function RootLayout({
       </head>
       <body className={notoSerifJP.className}>{children}</body>
     </html>
-  )
+  );
 }
