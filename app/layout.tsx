@@ -13,7 +13,8 @@ const notoSerifJP = Noto_Serif_JP({
 
 export const metadata: Metadata = {
   title: "Value Emergence System",
-  description: "Open Research on complex adaptive systems and value emergence",
+  description:
+    "Open research community of complex adaptive systems and value emergence",
   generator: "v0.dev",
   icons: {
     icon: "/favicon.ico",
