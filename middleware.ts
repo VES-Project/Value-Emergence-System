@@ -18,7 +18,7 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   // メンテナンスモード: 準備中ページ以外のすべてのアクセスをリダイレクト
-  if (pathname !== "/maintenance") {
+  if (!pathname.startsWith("/maintenance")) {
     // 静的ファイル、API routes、画像などは除外
     const staticFileRegex = /\.(.*)$/
     if (
