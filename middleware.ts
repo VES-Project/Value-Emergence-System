@@ -17,6 +17,30 @@ function getLocale(request: NextRequest) {
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
+  // メンテナンスモード: 準備中ページ以外のすべてのアクセスをリダイレクト
+  if (pathname !== "/maintenance") {
+    // 静的ファイル、API routes、画像などは除外
+    const staticFileRegex = /\.(.*)$/
+    if (
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/images") ||
+      pathname.startsWith("/svg") ||
+      pathname.startsWith("/fonts") ||
+      pathname === "/favicon.ico" ||
+      pathname === "/ogp.png" ||
+      staticFileRegex.test(pathname)
+    ) {
+      return NextResponse.next()
+    }
+
+    // すべてのページアクセスを準備中ページにリダイレクト
+    return NextResponse.redirect(new URL("/maintenance", request.url))
+  }
+
+  return NextResponse.next()
+
+  /* 国際化対応のコード（メンテナンス終了後に復元）
   // Check if the pathname starts with any locale followed by /presentations/
   const isPresentationPath = locales.some((locale) =>
     pathname.startsWith(`/${locale}/presentations/`)
@@ -54,6 +78,7 @@ export function middleware(request: NextRequest) {
   }
 
   return NextResponse.next()
+  */
 }
 
 export const config = {
